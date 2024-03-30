@@ -12,7 +12,7 @@ import ru.netology.cloudservicediploma.entity.dto.ErrorDto;
 public class AuthExceptionHandler {
 
     @ExceptionHandler(AuthException.class)
-    public ResponseEntity<ErrorDto> aeHandler(RuntimeException e) {
+    public ResponseEntity<ErrorDto> authExceptionHandler(RuntimeException e) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(new ErrorDto(e.getMessage(), 400));

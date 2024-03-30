@@ -11,13 +11,10 @@ import java.util.concurrent.ConcurrentHashMap;
 @Repository
 public class AuthRepository {
 
-    private Map<String, String> authUsers = new ConcurrentHashMap<>();
+    private final Map<String, String> authUsers = new ConcurrentHashMap<>();
 
     public UUID createToken(String login) {
-        UUID authToken = UUID.randomUUID();
-        authUsers.put(authToken.toString(), login);
-        System.out.println(authToken);
-        return authToken;
+        return UUID.nameUUIDFromBytes((login + System.currentTimeMillis()).getBytes());
     }
 
     public Optional<String> getLoginByToken(String authToken) {
