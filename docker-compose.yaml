@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  cloud-file-service:
+    image: 'cloud-service-diploma:latest'
+    build: ./
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+    environment:
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 12345678
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
+
+  database:
+    image: postgres
+    container_name: 'some-postgres'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata q
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=12345678
+    restart: always
+    ports:
+      - "5432:5432"
+
+volumes:
+  pgdata:
