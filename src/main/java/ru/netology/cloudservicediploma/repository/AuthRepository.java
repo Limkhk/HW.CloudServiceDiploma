@@ -14,7 +14,10 @@ public class AuthRepository {
     private final Map<String, String> authUsers = new ConcurrentHashMap<>();
 
     public UUID createToken(String login) {
-        return UUID.nameUUIDFromBytes((login + System.currentTimeMillis()).getBytes());
+        UUID authToken = UUID.randomUUID();
+        authUsers.put(authToken.toString(), login);
+        System.out.println(authToken);
+        return authToken;
     }
 
     public Optional<String> getLoginByToken(String authToken) {

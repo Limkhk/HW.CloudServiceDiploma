@@ -11,10 +11,10 @@ import ru.netology.cloudservicediploma.entity.dto.ErrorDto;
 @RestControllerAdvice
 public class AuthExceptionHandler {
 
-    @ExceptionHandler(AuthException.class)
-    public ResponseEntity<ErrorDto> authExceptionHandler(RuntimeException e) {
-        return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
-                .body(new ErrorDto(e.getMessage(), 400));
-    }
+//    @ExceptionHandler(AuthException.class)
+//    public ResponseEntity<ErrorDto> authExceptionHandler(RuntimeException e) {
+//        return ResponseEntity
+//                .status(HttpStatus.UNAUTHORIZED)
+//                .body(new ErrorDto(e.getMessage(), 400));
+//    }
 }
