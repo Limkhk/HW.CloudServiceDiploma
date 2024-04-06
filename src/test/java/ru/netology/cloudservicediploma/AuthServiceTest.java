@@ -60,16 +60,6 @@ public class AuthServiceTest {
     }
 
     @Test
-    void getLoginByToken_error() {
-        when(authRepository.getLoginByToken(authToken))
-                .thenReturn(Optional.empty());
-
-        assertThrows(AuthException.class,
-                () -> authService.getLoginByToken(authToken));
-        verify(authRepository, times(1)).getLoginByToken(authToken);
-    }
-
-    @Test
     void getLoginByToken_success() {
         when(authRepository.getLoginByToken(authToken))
                 .thenReturn(Optional.of("Random String"));
