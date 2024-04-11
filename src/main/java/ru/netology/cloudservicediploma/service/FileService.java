@@ -23,10 +23,12 @@ public class FileService {
         User userEntity = userService.getUserByLogin(login);
         File fileEntity = new File(fileName, size, fileContent, userEntity);
         fileRepository.save(fileEntity);
+        log.info("Пользователь <{}> загрузил {}", userEntity.getLogin(), fileName);
     }
 
     public byte[] downloadFile(String login, String fileName) {
         User userEntity = userService.getUserByLogin(login);
+        log.info("Пользователь <{}> скачал {}", userEntity.getLogin(), fileName);
         return fileRepository.findByFileNameAndUser(fileName, userEntity).get().getFileContent();
     }
 
@@ -34,11 +36,13 @@ public class FileService {
         User userEntity = userService.getUserByLogin(login);
         checkUniqueFileName(fileName, userEntity);
         fileRepository.renameFile(fileName, newFileName, userEntity);
+        log.info("Пользователь <{}> переименовал {} на {}", userEntity.getLogin(), fileName, newFileName);
     }
 
     public void deleteFile(String login, String fileName) {
         User userEntity = userService.getUserByLogin(login);
         fileRepository.deleteByFileNameAndUser(fileName, userEntity);
+        log.info("Пользователь <{}> удалил {}", userEntity.getLogin(), fileName);
     }
 
     public List<File> getFileList(String login, int limit) {
