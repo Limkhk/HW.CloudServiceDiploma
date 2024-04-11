@@ -3,19 +3,15 @@ package ru.netology.cloudservicediploma.controller;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.security.auth.message.AuthException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.netology.cloudservicediploma.entity.User;
 import ru.netology.cloudservicediploma.entity.dto.FileDto;
-import ru.netology.cloudservicediploma.repository.FileRepository;
 import ru.netology.cloudservicediploma.service.AuthService;
 import ru.netology.cloudservicediploma.service.FileService;
-import ru.netology.cloudservicediploma.service.UserService;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,9 +23,6 @@ import java.util.stream.Collectors;
 public class FileController {
     private final FileService fileService;
     private final AuthService authService;
-    private final UserService userService;
-    @Autowired
-    private FileRepository fileRepository;
 
     @PostMapping("/file")
     public ResponseEntity<?> uploadFile(
@@ -80,16 +73,11 @@ public class FileController {
     public ResponseEntity<List<FileDto>> getFileList(
             @RequestHeader("auth-token") String authToken,
             @RequestParam int limit) throws AuthException {
-        return ResponseEntity.ok(getFileListDto(authService.getLoginByToken(authToken), limit));
-    }
-
-    public List<FileDto> getFileListDto (String login, int limit) {
-        User userEntity = userService.getUserByLogin(login);
-        return fileRepository.findAllByUser(userEntity)
+        String login = authService.getLoginByToken(authToken);
+        List<FileDto> fileList = fileService.getFileList(login, limit)
                 .stream()
-                .limit(limit)
                 .map(file -> new FileDto(file.getFileName(), file.getSize()))
                 .collect(Collectors.toList());
+        return ResponseEntity.ok(fileList);
     }
 }
-

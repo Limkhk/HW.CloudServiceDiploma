@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.netology.cloudservicediploma.entity.File;
 import ru.netology.cloudservicediploma.entity.User;
-import ru.netology.cloudservicediploma.entity.dto.FileDto;
 import ru.netology.cloudservicediploma.repository.FileRepository;
 
 import java.io.IOException;
@@ -40,6 +39,14 @@ public class FileService {
     public void deleteFile(String login, String fileName) {
         User userEntity = userService.getUserByLogin(login);
         fileRepository.deleteByFileNameAndUser(fileName, userEntity);
+    }
+
+    public List<File> getFileList(String login, int limit) {
+        User userEntity = userService.getUserByLogin(login);
+        return fileRepository.findAllByUser(userEntity)
+                .stream()
+                .limit(limit)
+                .collect(Collectors.toList());
     }
 
     public void checkUniqueFileName(String fileName, User userEntity) {
