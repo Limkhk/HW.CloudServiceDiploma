@@ -42,15 +42,6 @@ public class FileService {
         fileRepository.deleteByFileNameAndUser(fileName, userEntity);
     }
 
-    public List<FileDto> getFileList(String login, int limit) {
-        User userEntity = userService.getUserByLogin(login);
-        return fileRepository.findAllByUser(userEntity)
-                .stream()
-                .limit(limit)
-                .map(file -> new FileDto(file.getFileName(), file.getSize()))
-                .collect(Collectors.toList());
-    }
-
     public void checkUniqueFileName(String fileName, User userEntity) {
         if (fileRepository.findByFileNameAndUser(fileName, userEntity).isPresent()) {
             log.error("Не пройдена проверка уникальности имени файла {} для пользователем {}", fileName, userEntity.getLogin());

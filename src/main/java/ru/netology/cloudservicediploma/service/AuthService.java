@@ -40,3 +40,5 @@ public class AuthService {
         authRepository.deleteToken(authToken);
     }
 }
+
+
